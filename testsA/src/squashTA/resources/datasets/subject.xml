@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <subject id="1" name="Tests unitaires web" date="2019-10-14 09:34:44" owner_id="1" module_id="1" type="TP" description="Bien écrire les tests de son composant logiciel PHP." document="subject-1.pdf"/>
+    <subject id="2" name="La carotte connectée" date="2019-10-14 09:34:44" owner_id="1" module_id="3" type="TD" description="" document="subject-2.pdf"/>
+    <subject id="3" name="Pocket-Market" date="2019-10-14 09:34:44" owner_id="1" module_id="3" type="TD" description="" document="subject-3.pdf"/>
+</dataset>

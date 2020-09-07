@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ subject.name }} | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <h1>{{ subject.name }}</h1>
+
+        <p>{{ subject.description }}</p>
+
+        <embed src="{{ asset('uploads/documents/' ~ subject.document) }}" width="100%" height="800"
+               type="application/pdf"/>
+
+        {% if logged_user_can_create_correction(subject) %}
+            <a class="btn btn-success mt-4 mb-3"
+               href=" {{ path('app_correction_create', {'idModule': module.id, 'idSubject': subject.id}) }}">
+                Ajouter une correction
+            </a>
+        {% endif %}
+
+        {% if subject.corrections | length > 0 %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Créé par</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for correction in subject.corrections %}
+                    <tr>
+                        <th scope="row" class="align-middle">{{ correction.id }}</th>
+                        <td class="align-middle">
+                            <a href="{{ path('app_correction_view', {'idModule': module.id, 'idSubject': subject.id, 'id': correction.id}) }}">
+                                {{ correction.name }}
+                            </a>
+                        </td>
+                        <td class="align-middle">
+                            {{ correction.owner.name }}
+                        </td>
+                        <td class="align-middle">
+                            {{ correction.date | date('d/m/Y') }}
+                        </td>
+                        <td class="align-middle">
+
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info">Ce module n'a pas encore de correction.</div>
+        {% endif %}
+
+        {{ form(form) }}
+
+        {% for comment in subject.comments %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <p class="card-title">
+                        <strong>{{ comment.owner.name }}</strong>
+                        <span class="text-muted">{{ comment.date | date('d/m/Y') }}</span>
+                    </p>
+                    <p class="card-text">{{ comment.text }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
+

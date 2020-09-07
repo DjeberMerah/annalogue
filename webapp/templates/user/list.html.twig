@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <a class="btn btn-success mt-3 mb-4" href="{{ path('app_user_create') }}">Créer un utilisateur</a>
+
+        {% if users | length > 0 %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Mail</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Rôles</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <th scope="row" class="align-middle">{{ user.id }}</th>
+                        <td class="align-middle">{{ user.mail }}</td>
+                        <td class="align-middle">{{ user.name }}</td>
+                        <td class="align-middle">
+                            {% for role in user.roles %}
+                                {{ role }}{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td class="align-middle">
+                            <div class="text-right">
+                                <a class="btn btn-secondary btn-sm"
+                                   href="{{ path('app_user_update', {'id': user.id}) }}">Modifier</a>
+                                <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                        data-target="#delete_modal_{{ user.id }}">
+                                    Supprimer
+                                </button>
+                            </div>
+                            <div class="modal fade" id="delete_modal_{{ user.id }}" tabindex="-1" role="dialog"
+                                 aria-labelledby="delete_modal_label_{{ user.id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="delete_modal_label_{{ user.id }}">Supprimer
+                                                l'utilisateur {{ user.name }}</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Êtes-vous sûr de vouloir supprimer l'utilisateur {{ user.name }} ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
+                                                Annuler
+                                            </button>
+                                            <a class="btn btn-danger btn-sm"
+                                               href="{{ path('app_user_delete', {'id': user.id}) }}">Supprimer</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info">Il n'y a pas encore d'utilisateur.</div>
+        {% endif %}
+    </div>
+{% endblock %}

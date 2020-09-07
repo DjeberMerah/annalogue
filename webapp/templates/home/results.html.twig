@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats de votre recherche | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% if modules | length > 0 %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Module</th>
+                    <th scope="col">Intervenant</th>
+                    <th scope="col">Créé par</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for module in modules %}
+                    <tr>
+                        <th scope="row" class="align-middle">{{ module.id }}</th>
+                        <td class="align-middle">
+                            <a href="{{ path('app_module_view',{'id': module.id}) }}">{{ module.name }}</a>
+                        </td>
+                        <td class="align-middle">
+                            {% if is_user_manager(module, app.user) %}
+                                Oui
+                            {% else %}
+                                Non
+                            {% endif %}
+                        </td>
+                        <td class="align-middle">
+                            {{ module.owner.name }}
+                        </td>
+                        <td class="align-middle">
+                            {{ module.date | date('d/m/Y') }}
+                        </td>
+                        <td class="align-middle">
+                            {% if logged_user_can_handle_module(module) %}
+                                <div class="text-right">
+                                    <a class="btn btn-secondary btn-sm"
+                                       href="{{ path('app_module_update',{'id': module.id}) }}">Modifier</a>
+                                    <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                            data-target="#delete_modal_{{ module.id }}">
+                                        Supprimer
+                                    </button>
+                                </div>
+                                <div class="modal fade" id="delete_modal_{{ module.id }}" tabindex="-1" role="dialog"
+                                     aria-labelledby="delete_modal_label_{{ module.id }}" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="delete_modal_label_{{ module.id }}">
+                                                    Supprimer
+                                                    le module {{ module.name }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Êtes-vous sûr de vouloir supprimer le module {{ module.name }} ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm"
+                                                        data-dismiss="modal">
+                                                    Annuler
+                                                </button>
+                                                <a class="btn btn-danger btn-sm"
+                                                   href="{{ path('app_module_delete', {'id': module.id}) }}">Supprimer</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info">Aucun module correspondant trouvé.</div>
+        {% endif %}
+    </div>
+{% endblock %}

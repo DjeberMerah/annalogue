@@ -1,0 +1,30 @@
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+    <profiles>
+        <profile>
+            <id>test-acceptation-annalogue</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+    <repositories>
+    <repository>
+        <id>org.squashtest.ta.release</id>
+        <name>squashtest test automation - releases</name>
+        <url>http://repo.squashtest.org/maven2/releases</url>
+    </repository>
+</repositories><!-- Squash TA maven plugin repository -->
+<pluginRepositories>
+<pluginRepository>
+    <id>org.squashtest.plugins.release</id>
+    <name>squashtest.org</name>
+    <url>http://repo.squashtest.org/maven2/releases</url>
+    <snapshots>
+        <enabled>false</enabled>
+    </snapshots>
+    <releases>
+        <enabled>true</enabled>
+    </releases>
+</pluginRepository>
+</pluginRepositories>
+        </profile>
+    </profiles>
+</settings>

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Erreur {{ status_code }} {{ status_text }} | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="alert alert-danger" role="alert">
+            <h1 class="h3" class="alert-heading">
+                Erreur {{ status_code }} {{ status_text }}
+            </h1>
+            <p class="mb-0">
+                Cette page n'existe pas.
+            </p>
+        </div>
+    </div>
+{% endblock %}

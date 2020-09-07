@@ -1,0 +1,18 @@
+
+SETUP :
+// vide la table
+# DELETE_ALL_DBUNIT datasets/cleaning-user.xml FROM Annalogue
+# DELETE_ALL_DBUNIT datasets/cleaning-module.xml FROM Annalogue
+# DELETE_ALL_DBUNIT datasets/cleaning-subject.xml FROM Annalogue
+// Insere les elements dans l'ordre du depliage du script
+# INSERT_DBUNIT datasets/user.xml INTO Annalogue
+# INSERT_DBUNIT datasets/module.xml INTO Annalogue
+# INSERT_DBUNIT datasets/subject.xml INTO Annalogue
+
+TEST :
+# EXECUTE_SELENIUM2 selenium WITH MAIN CLASS INT6NPTest
+
+TEARDOWN :
+// Verifier que la base de reference et presente
+# ASSERT_DBUNIT TARGET Annalogue CONTAINS  datasets/user.xml
+

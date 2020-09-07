@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<!--
+	<parent>
+		<groupId>m2test9</groupId>
+		<artifactId>testParent</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+	-->
+
+	<groupId>testsA</groupId>
+	<artifactId>testsA</artifactId>
+	<version>1.0-SNAPSHOT</version>
+
+	<properties><!-- Squash-TA framework version used by the project -->
+		<ta.framework.version>1.13.0-RELEASE</ta.framework.version>
+	</properties>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<verbose>true</verbose>
+						<fork>true</fork>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-toolchains-plugin</artifactId>
+					<version>1.1</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>toolchain</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<toolchains>
+							<jdk>
+								<version>1.8</version>
+							</jdk>
+						</toolchains>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<testResources>
+			<testResource>
+				<directory>src/squashTA/resources</directory>
+			</testResource>
+		</testResources>
+		<testSourceDirectory>src/squashTA/resources/selenium/java</testSourceDirectory>
+		<plugins><!--
+ Configuration of the Squash TA framework used by the project
+-->
+			<plugin>
+				<groupId>org.squashtest.ta</groupId>
+				<artifactId>squash-ta-maven-plugin</artifactId>
+				<version>${ta.framework.version}</version>
+
+				<dependencies>
+					<dependency>
+						<groupId>net.sourceforge.cssparser</groupId>
+						<artifactId>cssparser</artifactId>
+						<version>0.9.27</version>
+					</dependency>
+					<dependency>
+						<groupId>mysql</groupId>
+						<artifactId>mysql-connector-java</artifactId>
+						<version>5.1.6</version>
+					</dependency>
+					<dependency>
+						<groupId>org.seleniumhq.selenium</groupId>
+						<artifactId>htmlunit-driver</artifactId>
+						<version>2.36.0</version>
+					</dependency>
+					<dependency>
+						<groupId>org.apache.httpcomponents</groupId>
+						<artifactId>httpclient</artifactId>
+						<version>4.5.10</version>
+					</dependency>
+					<dependency>
+						<groupId>net.sourceforge.htmlunit</groupId>
+						<artifactId>htmlunit-core-js</artifactId>
+						<version>2.36.0</version>
+					</dependency>
+					<dependency>
+						<groupId>net.sourceforge.htmlunit</groupId>
+						<artifactId>htmlunit</artifactId>
+						<version>2.36.0</version>
+					</dependency>
+				</dependencies>
+
+				<configuration><!--
+ Uncomment the line below in order to the build finish in success even if a test failed
+--><!-- <alwaysSuccess>true</alwaysSuccess> --><!--
+ Define a log configuration file (at log4j format) to override the one defined internally
+--><!--
+ If the given file can't be found the engine switch to the internal configuration
+-->
+					<logConfiguration>${logConfFile}</logConfiguration><!-- Define exporters -->
+					<exporters>
+						<surefire>
+							<jenkinsAttachmentMode>${ta.jenkins.attachment.mode}</jenkinsAttachmentMode>
+						</surefire>
+						<html/>
+					</exporters><!-- Define configurers -->
+					<configurers>
+						<tmCallBack>
+							<endpointURL>${status.update.events.url}</endpointURL>
+							<executionExternalId>${squash.ta.external.id}</executionExternalId>
+							<jobName>${jobname}</jobName>
+							<hostName>${hostname}</hostName>
+							<endpointLoginConfFile>${squash.ta.conf.file}</endpointLoginConfFile>
+							<reportBaseUrl>${ta.tmcallback.reportbaseurl}</reportBaseUrl>
+							<jobExecutionId>${ta.tmcallback.jobexecutionid}</jobExecutionId>
+							<reportName>${ta.tmcallback.reportname}</reportName>
+						</tmCallBack>
+					</configurers>
+				</configuration><!--
+ Bind the Squash TA "run" goal to the maven integration-test phase and reuse the default configuration
+-->
+				<executions>
+					<execution>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build><!-- Squash TA maven repository -->
+	<repositories>
+		<repository>
+			<id>org.squashtest.ta.release</id>
+			<name>squashtest test automation - releases</name>
+			<url>http://repo.squashtest.org/maven2/releases</url>
+		</repository>
+	</repositories><!-- Squash TA maven plugin repository -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>org.squashtest.plugins.release</id>
+			<name>squashtest.org</name>
+			<url>http://repo.squashtest.org/maven2/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+		</pluginRepository>
+	</pluginRepositories>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.141.59</version>
+		</dependency>
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>htmlunit-driver</artifactId>
+			<version>2.36.0</version>
+		</dependency>
+	</dependencies>
+</project>

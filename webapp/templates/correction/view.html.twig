@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ correction.name }} | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ correction.name }}</h1>
+
+        <p>{{ correction.description }}</p>
+
+        <embed src="{{ asset('uploads/documents/' ~ correction.document) }}" width="100%" height="800"
+               type="application/pdf"/>
+    </div>
+{% endblock %}
+

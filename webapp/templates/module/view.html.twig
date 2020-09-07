@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ module.name }} | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <h1>{{ module.name }}</h1>
+
+        <div class="mt-4 mb-3">
+            {% if logged_user_can_create_subject(module) %}
+                <a class="btn btn-success" href="{{ path('app_subject_create', {'idModule': module.id}) }}">
+                    Créer un sujet
+                </a>
+            {% endif %}
+
+            {% if logged_user_can_handle_module(module) %}
+                <a class="btn btn-secondary" href=" {{ path('app_module_users', {'id': module.id}) }}">
+                    Utilisateurs inscrits
+                </a>
+            {% endif %}
+        </div>
+
+        {% if module.subjects | length > 0 %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Créé par</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for subject in module.subjects %}
+                    <tr>
+                        <th scope="row" class="align-middle">{{ subject.id }}</th>
+                        <td class="align-middle">
+                            <a href="{{ path('app_subject_view',{'idModule': module.id, 'id': subject.id}) }}">{{ subject.name }}</a>
+                        </td>
+                        <td class="align-middle">
+                            {{ subject.type }}
+                        </td>
+                        <td class="align-middle">
+                            {{ subject.owner.name }}
+                        </td>
+                        <td class="align-middle">
+                            {{ subject.date | date('d/m/Y') }}
+                        </td>
+                        <td class="align-middle">
+                            {% if logged_user_can_handle_subject(subject) %}
+                                <div class="text-right">
+                                    <a class="btn btn-secondary btn-sm"
+                                       href="{{ path('app_subject_update', {'idModule': module.id, 'id': subject.id}) }}">
+                                        Modifier
+                                    </a>
+                                    <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                            data-target="#delete_modal_{{ subject.id }}">
+                                        Supprimer
+                                    </button>
+                                </div>
+                                <div class="modal fade" id="delete_modal_{{ subject.id }}" tabindex="-1" role="dialog"
+                                     aria-labelledby="delete_modal_label_{{ subject.id }}" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="delete_modal_label_{{ subject.id }}">
+                                                    Supprimer
+                                                    le sujet {{ subject.name }}</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Êtes-vous sûr de vouloir supprimer le sujet {{ subject.name }} ?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary btn-sm"
+                                                        data-dismiss="modal">
+                                                    Annuler
+                                                </button>
+                                                <a class="btn btn-danger btn-sm"
+                                                   href="{{ path('app_subject_delete', {'idModule': module.id, 'id': subject.id}) }}">Supprimer</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info">Ce module n'a pas encore de sujet.</div>
+        {% endif %}
+    </div>
+{% endblock %}

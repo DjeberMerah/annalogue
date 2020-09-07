@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <user mail="user@univ-fcomte.fr" name="Basic user" roles="[&quot;ROLE_USER&quot;]"/>
+    <user mail="resp@univ-fcomte.fr" name="Responsable" roles="[&quot;ROLE_USER&quot;,&quot;ROLE_RESP&quot;]"/>
+    <user mail="admin@univ-fcomte.fr" name="Admin" roles="[&quot;ROLE_USER&quot;,&quot;ROLE_ADMIN&quot;]"/>
+    <user mail="emile.eid@univ-fcomte.fr" name="Emile" roles="[&quot;ROLE_ADMIN&quot;]"/>
+</dataset>

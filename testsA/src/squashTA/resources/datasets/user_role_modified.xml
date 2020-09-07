@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <user id="1" mail="user@univ-fcomte.fr" name="Basic user" password="$argon2id$v=19$m=65536,t=4,p=1$DWEnzBS+JAENFjTDkIVBEA$d115JwHk3BaMO4HzC846tYFneRX1vLI5HyK+KqejEgg" roles="[&quot;ROLE_USER&quot;,&quot;ROLE_RESP&quot;]"/>
+    <user id="2" mail="resp@univ-fcomte.fr" name="Responsable" password="$argon2id$v=19$m=65536,t=4,p=1$DWEnzBS+JAENFjTDkIVBEA$d115JwHk3BaMO4HzC846tYFneRX1vLI5HyK+KqejEgg" roles="[&quot;ROLE_USER&quot;,&quot;ROLE_RESP&quot;]"/>
+    <user id="3" mail="admin@univ-fcomte.fr" name="Admin" password="$argon2id$v=19$m=65536,t=4,p=1$DWEnzBS+JAENFjTDkIVBEA$d115JwHk3BaMO4HzC846tYFneRX1vLI5HyK+KqejEgg" roles="[&quot;ROLE_USER&quot;,&quot;ROLE_ADMIN&quot;]"/>
+</dataset>

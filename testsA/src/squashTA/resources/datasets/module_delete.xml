@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <module name="Ingenierie dirigee pas les modeles" owner_id="2"/>
+    <module name="Programmation d Architecture Multi tiers" owner_id="2"/>
+    <module name="Calculabilite et NP Completude" owner_id="3"/>
+    <module name="Reseaux avances" owner_id="3"/>
+
+</dataset>

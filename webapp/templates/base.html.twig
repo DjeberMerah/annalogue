@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Annal'ogue{% endblock %}</title>
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="{{ path("app_home") }}">Annal'ogue</a>
+        {% if is_granted(['ROLE_USER']) %}
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    {% set role = 'Utilisateur' %}
+
+                    {% if is_granted(['ROLE_ADMIN']) %}
+                        {% set role = 'Administrateur' %}
+                    {% elseif is_granted(['ROLE_RESP']) %}
+                        {% set role = 'Responsable' %}
+                    {% endif %}
+
+                    <span class="navbar-text">
+                        {{ app.user.name }} ({{ role }})
+                    </span>
+                </li>
+                {% if is_granted(['ROLE_ADMIN']) %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path("app_users") }}">Utilisateurs</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path("app_logout") }}">Déconnexion</a>
+                </li>
+            </ul>
+            {{ render(controller('App\\Controller\\HomeController::search')) }}
+        {% endif %}
+    </div>
+</nav>
+
+{% block body %}{% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+</body>
+</html>

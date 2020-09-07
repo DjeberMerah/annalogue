@@ -1,0 +1,162 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utilisateurs inscrits au module {{ module.name }} | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+
+        <button class="btn btn-outline-success mt-4 mb-4" data-toggle="modal" data-target="#subscribe_modal">
+            Inscrire des utilisateurs
+        </button>
+
+        <div id="subscribe_modal" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <form action="{{ path('app_users_subscribe', {'id': module.id}) }}" method="post" class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Inscrire des utilisateurs </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Veuillez choisir, parmi la liste ci-dessous, les utilisateurs que vous voulez inscrire à ce
+                            module.</p>
+
+                        {% if non_subscribed_users | length > 0 %}
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Mail</th>
+                                    <th scope="col">Nom</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for user in non_subscribed_users %}
+                                    <tr>
+                                        <th scope="row" class="align-middle">{{ user.id }}</th>
+                                        <td class="align-middle">
+                                            <label class="mb-0" for="user_{{ user.id }}">
+                                                {{ user.mail }}
+                                            </label>
+                                        </td>
+                                        <td class="align-middle">
+                                            <label class="mb-0" for="user_{{ user.id }}">
+                                                {{ user.name }}
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                       id="user_{{ user.id }}"
+                                                       class="form-check-input position-static" name="user[]"
+                                                       value="{{ user.id }}">
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        {% else %}
+                            <div class="alert alert-info">Aucun utilisateur n'est disponible.</div>
+                        {% endif %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm"
+                                data-dismiss="modal">
+                            Annuler
+                        </button>
+                        <button type="submit" class="btn btn-primary btn-sm">
+                            Valider
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if users | length > 0 %}
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Mail</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Est intervenant</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <th scope="row" class="align-middle">{{ user.id }}</th>
+                        <td class="align-middle">{{ user.mail }}</td>
+                        <td class="align-middle">{{ user.name }}</td>
+                        <td class="align-middle">
+                            {% if is_user_manager(module, user) %}
+                                Oui
+                            {% else %}
+                                Non
+                            {% endif %}
+                        </td>
+                        <td class="align-middle">
+                            <div class="text-right">
+                                {% if is_user_manager(module, user) %}
+                                    <a class="btn btn-outline-secondary btn-sm"
+                                       href="{{ path('app_module_manager_unset', {'id': module.id, 'idUser': user.id}) }}">
+                                        Annuler intervenant
+                                    </a>
+                                {% else %}
+                                    <a class="btn btn-secondary btn-sm"
+                                       href="{{ path('app_module_manager_set', {'id': module.id, 'idUser': user.id}) }}">
+                                        Rendre intervenant
+                                    </a>
+                                {% endif %}
+                                <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                        data-target="#unsubscribe_modal_{{ user.id }}">
+                                    Désinscrire
+                                </button>
+                            </div>
+                            <div class="modal fade" id="unsubscribe_modal_{{ user.id }}" tabindex="-1" role="dialog"
+                                 aria-labelledby="unsubscribe_modal_label_{{ user.id }}" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="unsubscribe_modal_label_{{ user.id }}">
+                                                Désinscrire l'utilisateur {{ user.name }}
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Êtes-vous sûr de vouloir de désinscrire l'utilisateur {{ user.name }} du
+                                            module {{ module.name }} ?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
+                                                Annuler
+                                            </button>
+                                            <a class="btn btn-danger btn-sm"
+                                               href="{{ path('app_module_unsubscribe', {'id': module.id , 'idUser': user.id}) }}">
+                                                Désinscrire
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-info">Aucun utilisateur n'est encore inscrit à ce module.</div>
+        {% endif %}
+    </div>
+{% endblock %}

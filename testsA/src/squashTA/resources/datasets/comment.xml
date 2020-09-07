@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+    <comment id="1" text="Un premier commentaire." date="2019-10-14 09:34:44" owner_id="1" subject_id="1"/>
+    <comment id="2" text="Un deuxième commentaire." date="2019-10-14 09:34:44" owner_id="2" subject_id="1"/>
+    <comment id="3" text="Un troisième commentaire." date="2019-10-14 09:34:44" owner_id="3" subject_id="1"/>
+</dataset>

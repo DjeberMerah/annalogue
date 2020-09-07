@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le sujet {{ subject.name }} | {{ parent() }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        {{ form(form) }}
+    </div>
+{% endblock %}
